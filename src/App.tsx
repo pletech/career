@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import TrackTabs from './components/TrackTabs';
-import ControlBar from './components/ControlBar';
 import SubtrackTabs from './components/SubtrackTabs';
 import SkillTreeGraph from './components/SkillTreeGraph';
 import DetailPanel from './components/DetailPanel';
