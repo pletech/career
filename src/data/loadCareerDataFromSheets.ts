@@ -165,13 +165,8 @@ function parseContentRows(rows: Record<string, string>[]): SheetContentRow[] {
     const titleJa = (row.titleJa ?? '').trim();
     const shortLabel = (row.shortLabel ?? '').trim();
 
-    if (!titleJa) {
-      issues.push(`${prefix} (${id}): titleJa is required.`);
-      return;
-    }
-
-    if (!shortLabel) {
-      issues.push(`${prefix} (${id}): shortLabel is required.`);
+    if (!titleJa || !shortLabel) {
+      // titleJa または shortLabel が空の行はスキップ（非公開ノードの空行を許容）
       return;
     }
 
@@ -210,17 +205,14 @@ function mergeSheetContentIntoFallback(contentRows: SheetContentRow[]): CareerNo
   const contentById = new Map(contentRows.map((row) => [row.id, row]));
   const fallbackIds = new Set(fallbackNodes.map((node) => node.id));
 
-  for (const fallbackNode of fallbackNodes) {
-    if (!contentById.has(fallbackNode.id)) {
-      issues.push(`Nodes sheet is missing required node id "${fallbackNode.id}".`);
-    }
-  }
-
+  // シートに存在するIDがfallbackに無い場合のみエラー（未知のIDはデータ不整合）
   for (const row of contentRows) {
     if (!fallbackIds.has(row.id)) {
       issues.push(`Nodes sheet contains unknown node id "${row.id}".`);
     }
   }
+
+  // fallbackにあるがシートに無い場合はfallbackをそのまま使用（非公開ノードの空行を許容）
 
   if (issues.length > 0) {
     throw new SheetDataError(
