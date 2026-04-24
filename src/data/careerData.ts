@@ -225,10 +225,10 @@ function buildSingleLaneTrack(args: {
 
   for (const stage of STAGES) {
     const relatedNodeIds =
-      args.idPrefix === 'its-it-cm' && stage === 1
+      args.idPrefix === 'its-helpdesk-mg' && stage === 1
         ? ['infra-server-common-1', 'infra-network-common-1']
-        : args.idPrefix === 'its-josis-cm' && stage === 1
-          ? ['its-it-cm-1']
+        : args.idPrefix === 'its-admin-mg' && stage === 1
+          ? ['its-helpdesk-mg-1']
           : undefined;
 
     nodes.push(
@@ -305,16 +305,16 @@ const infrastructureNodes: CareerNode[] = [
 const itSupportNodes: CareerNode[] = [
   ...buildSingleLaneTrack({
     track: 'it-support',
-    subtrack: 'ITサポート',
-    idPrefix: 'its-it-cm',
+    subtrack: 'ヘルプデスク系',
+    idPrefix: 'its-helpdesk-mg',
     x: ITS_IT_X,
     meta: ITS_IT_META,
     pathType: 'manager',
   }),
   ...buildSingleLaneTrack({
     track: 'it-support',
-    subtrack: '情シス支援',
-    idPrefix: 'its-josis-cm',
+    subtrack: '事務系',
+    idPrefix: 'its-admin-mg',
     x: ITS_JOSIS_X,
     meta: ITS_JOSIS_META,
     pathType: 'manager',
@@ -386,8 +386,8 @@ const rawAllEdges: CareerEdge[] = [
   ...buildDualPathProgressionEdges('dev-mobile'),
   ...buildDualPathProgressionEdges('infra-server'),
   ...buildDualPathProgressionEdges('infra-network'),
-  ...buildSingleLaneProgressionEdges('its-it-cm'),
-  ...buildSingleLaneProgressionEdges('its-josis-cm'),
+  ...buildSingleLaneProgressionEdges('its-helpdesk-mg'),
+  ...buildSingleLaneProgressionEdges('its-admin-mg'),
   ...buildSingleLaneProgressionEdges('its-pmo-cm'),
 ];
 
