@@ -222,6 +222,7 @@ const App: React.FC = () => {
           onSearchChange={setSearchQuery}
           activeFilters={activeFilters}
           onFilterToggle={handleFilterToggle}
+          showFilters={activeTrack !== 'it-support'}
         />
       </div>
 
@@ -287,6 +288,7 @@ const App: React.FC = () => {
               onSearchChange={setSearchQuery}
               activeFilters={activeFilters}
               onFilterToggle={handleFilterToggle}
+              showFilters={activeTrack !== 'it-support'}
             />
 
             <MobileGestureTutorial
