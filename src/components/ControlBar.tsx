@@ -6,6 +6,7 @@ export interface ControlBarProps {
   onSearchChange: (query: string) => void;
   activeFilters: Set<PathType | 'all'>;
   onFilterToggle: (filter: PathType | 'all') => void;
+  showFilters?: boolean;
 }
 
 const FILTER_OPTIONS: { key: PathType | 'all'; label: string }[] = [
@@ -20,6 +21,7 @@ export const ControlBarContent: React.FC<ControlBarProps & { showLegend?: boolea
   activeFilters,
   onFilterToggle,
   showLegend = true,
+  showFilters = true,
 }) => {
   return (
     <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
@@ -53,26 +55,28 @@ export const ControlBarContent: React.FC<ControlBarProps & { showLegend?: boolea
         )}
       </div>
 
-      <div className="flex flex-wrap items-center gap-1.5">
-        <span className="text-[10px] text-gray-400 mr-1">フィルター:</span>
-        {FILTER_OPTIONS.map(({ key, label }) => {
-          const isActive = activeFilters.has(key);
-          return (
-            <button
-              key={key}
-              onClick={() => onFilterToggle(key)}
-              className={`
-                px-2.5 py-1 text-[11px] rounded-full border transition-all
-                ${isActive
-                  ? 'bg-gray-800 text-white border-gray-800'
-                  : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400'}
-              `}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
+      {showFilters && (
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-[10px] text-gray-400 mr-1">フィルター:</span>
+          {FILTER_OPTIONS.map(({ key, label }) => {
+            const isActive = activeFilters.has(key);
+            return (
+              <button
+                key={key}
+                onClick={() => onFilterToggle(key)}
+                className={`
+                  px-2.5 py-1 text-[11px] rounded-full border transition-all
+                  ${isActive
+                    ? 'bg-gray-800 text-white border-gray-800'
+                    : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400'}
+                `}
+              >
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {showLegend && (
         <div className="md:ml-auto flex flex-wrap items-center gap-3 text-[10px] text-gray-400">
