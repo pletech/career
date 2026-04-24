@@ -4,7 +4,7 @@ import type { CareerEdge, CareerNode, PathType, Track } from '../types/career';
 const DEFAULT_SUBTRACKS: Record<Track, string[]> = {
   development: ['Webアプリケーション', 'モバイルアプリ'],
   infrastructure: ['サーバー', 'ネットワーク'],
-  'it-support': ['ITサポート', '情シス支援', 'PMO支援'],
+  'it-support': ['ITサポート'],
 };
 
 export function useCareerPathState(allNodes: CareerNode[], allEdges: CareerEdge[]) {
@@ -22,9 +22,17 @@ export function useCareerPathState(allNodes: CareerNode[], allEdges: CareerEdge[
 
   const getNodeById = useCallback((id: string) => nodeById.get(id), [nodeById]);
 
+  /** 公開対象ノードのみ（Managerフィルタ・サブトラック公開ポリシー適用済み） */
+  const publicNodes = useMemo(() => {
+    return allNodes.filter((n) => {
+      if (n.track === 'it-support') return n.subtrack === 'ITサポート';
+      return n.pathType !== 'manager';
+    });
+  }, [allNodes]);
+
   const availableSubtracks = useMemo(() => {
     const labels = new Set<string>();
-    allNodes.forEach((node) => {
+    publicNodes.forEach((node) => {
       if (node.track !== activeTrack) return;
       if (!node.subtrack) return;
       labels.add(node.subtrack);
@@ -32,11 +40,11 @@ export function useCareerPathState(allNodes: CareerNode[], allEdges: CareerEdge[
 
     const fromData = Array.from(labels).sort((a, b) => a.localeCompare(b, 'ja'));
     return fromData.length > 0 ? fromData : DEFAULT_SUBTRACKS[activeTrack];
-  }, [activeTrack, allNodes]);
+  }, [activeTrack, publicNodes]);
 
   const hasTrackSubtrackData = useMemo(
-    () => allNodes.some((node) => node.track === activeTrack && Boolean(node.subtrack)),
-    [activeTrack, allNodes]
+    () => publicNodes.some((node) => node.track === activeTrack && Boolean(node.subtrack)),
+    [activeTrack, publicNodes]
   );
 
   const handleTrackChange = useCallback((track: Track) => {
@@ -66,14 +74,8 @@ export function useCareerPathState(allNodes: CareerNode[], allEdges: CareerEdge[
   }, []);
 
   const filteredNodes: CareerNode[] = useMemo(() => {
-    // 公開版ポリシー:
-    // - 開発・インフラ: Manager トラックは非公開（削除ではなく非公開）
-    // - IT サポート: 全ノードが pathType:'manager' のため Manager フィルタ適用外
-    let nodes = allNodes.filter((n) => {
-      if (n.track !== activeTrack) return false;
-      if (n.track === 'it-support') return true;
-      return n.pathType !== 'manager';
-    });
+    // publicNodes（公開ポリシー適用済み）を起点にフィルタリング
+    let nodes = publicNodes.filter((n) => n.track === activeTrack);
 
     if (activeSubtrack !== 'all' && hasTrackSubtrackData) {
       nodes = nodes.filter((n) => n.subtrack === activeSubtrack);
