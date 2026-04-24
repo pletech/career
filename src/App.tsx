@@ -177,16 +177,18 @@ const App: React.FC = () => {
                 </svg>
               </button>
 
-              <button
-                type="button"
-                onClick={() => setIsMobileFilterOpen(true)}
-                className="inline-flex items-center gap-1 rounded-md border border-gray-200 px-2.5 py-1.5 text-xs text-gray-600"
-              >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h18M6 12h12m-9 8h6" />
-                </svg>
-                Search/Filter
-              </button>
+              {activeTrack !== 'it-support' && (
+                <button
+                  type="button"
+                  onClick={() => setIsMobileFilterOpen(true)}
+                  className="inline-flex items-center gap-1 rounded-md border border-gray-200 px-2.5 py-1.5 text-xs text-gray-600"
+                >
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h18M6 12h12m-9 8h6" />
+                  </svg>
+                  Search/Filter
+                </button>
+              )}
             </div>
             <div className="hidden md:block text-xs text-gray-400 shrink-0">
               現在の表示:{' '}
@@ -217,13 +219,14 @@ const App: React.FC = () => {
       {inlineErrorBanner}
 
       <div className="hidden md:block">
-        <ControlBar
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          activeFilters={activeFilters}
-          onFilterToggle={handleFilterToggle}
-          showFilters={activeTrack !== 'it-support'}
-        />
+        {activeTrack !== 'it-support' && (
+          <ControlBar
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            activeFilters={activeFilters}
+            onFilterToggle={handleFilterToggle}
+          />
+        )}
       </div>
 
       {loading ? (
