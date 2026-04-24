@@ -36,8 +36,8 @@ const INFRA_NETWORK_COMMON_X = INFRA_NETWORK_SP_X + COMMON_X_OFFSET;
 
 // IT Support
 const ITS_IT_X = 100;
-const ITS_JOSIS_X = 350;
-const ITS_PMO_X = 600;
+const ITS_JOSIS_X = 600;
+const ITS_PMO_X = 350;
 
 // ---------------------------------------------------------------------------
 // Placeholder content
