@@ -4,7 +4,7 @@ import type { CareerEdge, CareerNode, PathType, Track } from '../types/career';
 const DEFAULT_SUBTRACKS: Record<Track, string[]> = {
   development: ['Webアプリケーション', 'モバイルアプリ'],
   infrastructure: ['サーバー', 'ネットワーク'],
-  'it-support': ['ITサポート'],
+  'it-support': ['ヘルプデスク系', '事務系'],
 };
 
 export function useCareerPathState(allNodes: CareerNode[], allEdges: CareerEdge[]) {
@@ -25,7 +25,10 @@ export function useCareerPathState(allNodes: CareerNode[], allEdges: CareerEdge[
   /** 公開対象ノードのみ（Managerフィルタ・サブトラック公開ポリシー適用済み） */
   const publicNodes = useMemo(() => {
     return allNodes.filter((n) => {
-      if (n.track === 'it-support') return n.subtrack === 'ITサポート';
+      if (n.track === 'it-support') {
+        // 公開対象: ヘルプデスク系・事務系のみ（PMO支援は非公開）
+        return n.subtrack === 'ヘルプデスク系' || n.subtrack === '事務系';
+      }
       return n.pathType !== 'manager';
     });
   }, [allNodes]);
