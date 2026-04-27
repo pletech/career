@@ -154,7 +154,7 @@ const App: React.FC = () => {
   ) : null;
 
   return (
-    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
+    <div className="h-[100dvh] flex flex-col bg-gray-50 overflow-hidden">
       <header className="flex-shrink-0 bg-white border-b border-gray-200 px-3 py-1.5 md:px-5 md:py-3">
         <div className="flex flex-col gap-1 md:gap-3">
           <div className="flex items-center justify-between gap-3 min-w-0">
